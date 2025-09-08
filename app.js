@@ -78,15 +78,59 @@ function renderTable(arr) {
     const tr = document.createElement('tr');
     tr.innerHTML = `
       <td data-label="#">${i + 1}</td>
-      <td data-label="Từ">${escapeHtml(item.word)}</td>
+      <td data-label="Từ">
+        <span class="word-row">
+          <button class="icon-btn speak-btn" title="Phát âm" aria-label="Phát âm" data-word="${escapeHtml(item.word)}">🔊</button>
+          <span>${escapeHtml(item.word)}</span>
+        </span>
+      </td>
       <td data-label="Loại từ">${escapeHtml(item.partOfSpeech)}</td>
       <td data-label="Phiên âm">${escapeHtml(item.phonetic)}</td>
       <td data-label="Nghĩa (vi)">${escapeHtml(item.meaning_vi)}</td>
       <td data-label="Ví dụ (en)">${escapeHtml(item.example_en)}</td>
       <td data-label="Ví dụ (vi)">${escapeHtml(item.example_vi)}</td>
+      <td data-label="Phát âm"><button class="speak-btn" data-word="${escapeHtml(item.word)}">Phát âm</button></td>
     `;
     tableBody.appendChild(tr);
   });
+}
+
+// Speech synthesis
+function pickVoiceEn() {
+  const synth = window.speechSynthesis;
+  const voices = synth.getVoices() || [];
+  // Ưu tiên giọng en-GB, sau đó en-US, sau cùng bất kỳ tiếng Anh
+  const byLang = (langStart) => voices.find(v => (v.lang || '').toLowerCase().startsWith(langStart));
+  return byLang('en-gb') || byLang('en-us') || voices.find(v => (v.lang || '').toLowerCase().startsWith('en')) || null;
+}
+
+function speakText(text) {
+  if (!('speechSynthesis' in window)) {
+    setStatus('Trình duyệt không hỗ trợ phát âm (Speech Synthesis).', 'error');
+    return;
+  }
+  const synth = window.speechSynthesis;
+  // Hủy các phát trước để tránh chồng
+  synth.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = pickVoiceEn();
+  if (voice) utter.voice = voice;
+  utter.rate = 0.95;
+  utter.pitch = 1.0;
+  synth.speak(utter);
+}
+
+// Event delegation cho nút phát âm
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button.speak-btn');
+  if (!btn) return;
+  const w = btn.getAttribute('data-word') || '';
+  if (w) speakText(w);
+});
+
+// Một số trình duyệt load voices async
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => {};
 }
 
 function escapeHtml(str) {
