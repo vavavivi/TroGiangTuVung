@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Từ vựng chủ đề Môi trường - Gemini</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <h1>Trợ giảng Từ vựng</h1>
+    <p class="subtitle">Tạo danh sách 15 từ theo chủ đề</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <div class="form-row" style="display:none">
+        <label for="apiKey">API Key</label>
+        <input id="apiKey" type="password" placeholder="Nhập Google Gemini API Key" autocomplete="off" disabled />
+      </div>
+      <div class="form-row">
+        <label for="topic">Chủ đề</label>
+        <input id="topic" type="text" placeholder="Ví dụ: Environment (Môi trường)" value="" />
+      </div>
+      <div class="form-row inline">
+        <button id="generateBtn" class="btn primary">Tạo danh sách</button>
+        <button id="downloadBtn" class="btn" style="display:none" disabled>Tải JSON</button>
+      </div>
+      <div id="status" class="status" aria-live="polite"></div>
+    </section>
+
+    <section class="card" style="display:none">
+      <h2>Kết quả JSON</h2>
+      <pre id="jsonOutput" class="code-block" tabindex="0" aria-label="Kết quả JSON"></pre>
+    </section>
+
+    <section class="card">
+      <h2>Bảng xem nhanh</h2>
+      <div class="table-wrap">
+        <table id="resultTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Từ</th>
+              <th>Loại từ</th>
+              <th>Phiên âm</th>
+              <th>Nghĩa (vi)</th>
+              <th>Ví dụ (en)</th>
+              <th>Ví dụ (vi)</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html> 
