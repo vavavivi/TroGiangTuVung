@@ -80,6 +80,21 @@ input {
 #resultTable th { color: var(--muted); font-weight: 600; }
 #resultTable td { color: var(--text); font-size: .95rem; word-break: break-word; }
 
+/* Inline word row with speak button */
+.word-row { display: inline-flex; align-items: center; gap: 8px; }
+.icon-btn {
+  width: 28px; height: 28px; min-width: 28px;
+  border-radius: 50%; border: 1px solid var(--border);
+  background: #1a2744; color: #e7ecf4; cursor: pointer; font-size: 14px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-btn:active { filter: brightness(.95); }
+.icon-btn .material { pointer-events: none; }
+
+/* Improve readability */
+#resultTable td { line-height: 1.4; }
+#resultTable td[data-label] { padding-top: 10px; padding-bottom: 10px; }
+
 /* Mobile stacked table */
 @media (max-width: 640px) {
   #resultTable thead { display: none; }
@@ -93,6 +108,8 @@ input {
     font-size: .85rem;
     margin-bottom: 2px;
   }
+  /* Ẩn cột Phát âm riêng trên mobile vì đã có nút trong ô Từ */
+  #resultTable td[data-label="Phát âm"] { display: none; }
 }
 
 .app-footer { text-align: center; color: var(--muted); padding: 16px; }
@@ -100,4 +117,19 @@ input {
 @media (min-width: 640px) {
   .app-header h1 { font-size: 1.5rem; }
   .card { padding: 18px; }
+}
+
+.speak-btn {
+  padding: 6px 10px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: #14203a;
+  color: #e7ecf4;
+  cursor: pointer;
+  font-size: .9rem;
+}
+.speak-btn:active { filter: brightness(.95); }
+
+@media (max-width: 640px) {
+  #resultTable td[data-label="Phát âm"] button.speak-btn { width: 100%; }
 } 
